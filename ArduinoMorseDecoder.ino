@@ -3,7 +3,9 @@
 const char long_signal = '-';
 const char short_signal = '.';
 
-const long long_signal_interval = 30;
+const long long_signal_interval = 50;
+const long short_signal_interval = 20;
+
 const long letter_space_interval = 70;
 
 void setup()
@@ -13,11 +15,16 @@ void setup()
 }
 
 unsigned long signal_interval = 0;
+
+unsigned long previous_millis = 0;
+
 char code;
 
 void loop()
 {
     int light_intensity = analogRead(LIGHT_SENSOR);
+
+    unsigned long current_millis = millis();
 
     if (light_intensity > 100)
     {
@@ -32,13 +39,17 @@ void loop()
         {
             code = long_signal;
         }
-        else
+        else if (signal_interval < long_signal_interval && signal_interval >= short_signal_interval)
         {
             code = short_signal;
         }
 
         Serial.println(code);
-        pause = 0;
+        signal_interval = 0;
     }
+    else{
+        
+    }
+
     delay(10);
 }
